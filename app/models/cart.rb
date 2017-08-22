@@ -1,5 +1,5 @@
 class Cart < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, foreign_key: 'user_id'
   has_many :line_items
   has_many :items, through: :line_items
 
@@ -24,5 +24,6 @@ class Cart < ActiveRecord::Base
     else
       self.line_items.build(item_id: item_id)
     end
+    self.line_items.last
   end
 end

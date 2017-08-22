@@ -3,6 +3,6 @@ class Item < ActiveRecord::Base
   belongs_to :category
 
   def self.available_items
-    Item.all.map { |item| item.inventory > 0 }
+    Item.all.select { |item| item.inventory > 0 }
   end
 end
