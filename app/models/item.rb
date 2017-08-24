@@ -5,4 +5,6 @@ class Item < ActiveRecord::Base
   def self.available_items
     Item.all.select { |item| item.inventory > 0 }
   end
+
+
 end

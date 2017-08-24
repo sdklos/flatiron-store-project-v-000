@@ -3,5 +3,12 @@
 <ul>
 <% @category.items.each do |item| %>
     <li><%= link_to item.title, item_path(item) %></li>
+    <li><%= number_to_currency(item.price.to_f/100) %></li>
+    <% if user_signed_in? %>
+      <%= form_for item, url: line_items_path, method: :post do |f| %>
+        <%= f.hidden_field :id, name: "item_id" %>
+        <%= f.submit 'Add to Cart' %>
+      <% end %>
+    <% end %>
 <% end %>
 </ul>

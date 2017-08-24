@@ -4,7 +4,7 @@ describe 'Feature Test: Cart', :type => :feature do
 
     context "logged in" do
       before(:each) do
-        @user = User.first
+        @user = User.create(email: 'sdklos@gmail.com', password: '11111111')
         @user.current_cart = @user.carts.create
         @current_cart = @user.current_cart
         @first_item = Item.first
@@ -28,7 +28,6 @@ describe 'Feature Test: Cart', :type => :feature do
      it "redirects to cart show page on Checkout" do
        visit cart_path(@user.current_cart)
        click_button("Checkout")
-
        expect(page.current_path).to eq(cart_path(@current_cart))
        expect(page).to_not have_button("Checkout")
      end
@@ -48,11 +47,12 @@ describe 'Feature Test: Cart', :type => :feature do
      end
 
      it "sets current_cart to nil on checkout" do
+
        visit cart_path(@user.current_cart)
        click_button("Checkout")
-
        @user.reload
-       expect(@user.current_cart).to be_nil 
+
+       expect(@user.current_cart).to be_nil
      end
     end
   end
@@ -60,7 +60,7 @@ describe 'Feature Test: Cart', :type => :feature do
 
     context "logged in" do
       before(:each) do
-        @user = User.first
+        @user = User.create(email: 'sdklos@gmail.com', password: '11111111')
         login_as(@user, scope: :user)
       end
 
@@ -87,10 +87,13 @@ describe 'Feature Test: Cart', :type => :feature do
         @user.current_cart = nil
         @user.save
         visit store_path
+
         within("form[action='#{line_items_path(item_id: first_item)}']") do
           click_button("Add to Cart")
+
         end
         @user.reload
+
         expect(@user.current_cart).to_not be_nil
       end
 
@@ -140,7 +143,7 @@ describe 'Feature Test: Cart', :type => :feature do
 
       it "Updates quantity when selecting the same item twice" do
         first_item = Item.first
-        2.times do 
+        2.times do
           visit store_path
           within("form[action='#{line_items_path(item_id: first_item)}']") do
             click_button("Add to Cart")
